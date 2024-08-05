@@ -1,4 +1,4 @@
-const lcjs = require('@arction/lcjs')
+const lcjs = require('@lightningchart/lcjs')
 const { lightningChart, Themes, emptyFill, AxisTickStrategies, AxisScrollStrategies, DashedLine, emptyLine, ImageFill } = lcjs
 
 const exampleContainer = document.getElementById('chart') || document.body
