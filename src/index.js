@@ -22,13 +22,14 @@ const lc = lightningChart({
             resourcesBaseUrl: new URL(document.head.baseURI).origin + new URL(document.head.baseURI).pathname + 'resources/',
         })
 const chart = lc.ChartXY({
+    legend: { visible: false },
     container: containerChart1,
     theme: Themes[new URLSearchParams(window.location.search).get('theme') || 'darkGold'] || undefined,
 })
 const timeAxis = chart
     .getDefaultAxisX()
     .setTickStrategy(AxisTickStrategies.Time)
-    .setScrollStrategy(AxisScrollStrategies.progressive)
+    .setScrollStrategy(AxisScrollStrategies.scrolling)
     .setDefaultInterval((state) => ({
         end: state.dataMax ?? 0,
         start: (state.dataMax ?? 0) - 15_000,
@@ -36,12 +37,7 @@ const timeAxis = chart
     }))
 const axisY = chart.getDefaultAxisY().setDefaultInterval({ start: 0, end: 100 })
 
-const eventSeries = chart
-    .addPointLineAreaSeries({ dataPattern: null })
-    .setAreaFillStyle(emptyFill)
-    .setStrokeStyle(emptyLine)
-    .setAutoScrollingEnabled(false)
-    .setCursorEnabled(false)
+const eventSeries = chart.addPointSeries().setAutoScrollingEnabled(false).setCursorEnabled(false)
 const warningImage = new Image()
 warningImage.crossOrigin = ''
 warningImage.src = document.head.baseURI + 'examples/assets/0054/warning.png'
@@ -50,7 +46,7 @@ eventSeries
     .setPointAlignment({ x: 0, y: -1.1 })
     .setPointSize(0.8)
 
-const lineSeries = chart.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' }).setAreaFillStyle(emptyFill).setMaxSampleCount(100_000)
+const lineSeries = chart.addPointLineSeries().setMaxSampleCount(100_000)
 axisY
     .addConstantLine()
     .setValue(threshold)
